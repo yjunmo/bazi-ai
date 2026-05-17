@@ -11,7 +11,7 @@ const PBKDF2_ITERATIONS = 250_000;
 const enc = new TextEncoder();
 const dec = new TextDecoder();
 
-async function deriveKey(passphrase: string, salt: Uint8Array): Promise<CryptoKey> {
+async function deriveKey(passphrase: string, salt: Uint8Array<ArrayBuffer>): Promise<CryptoKey> {
   const baseKey = await crypto.subtle.importKey(
     'raw',
     enc.encode(passphrase),
@@ -40,7 +40,7 @@ function toB64(buf: ArrayBuffer | Uint8Array): string {
   return btoa(s);
 }
 
-function fromB64(s: string): Uint8Array {
+function fromB64(s: string): Uint8Array<ArrayBuffer> {
   const bin = atob(s);
   const arr = new Uint8Array(bin.length);
   for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
