@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family:
+    'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', STSong, ui-serif, serif;
+  background: #f6efe3;
+  color: #1a1411;
+}
+
+html.dark body {
+  background: #141413;
+  color: #e7e7e5;
+}
+
+/* 自定义滚动条 */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 4px;
+}
+html.dark *::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.18);
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply btn bg-zhu-600 text-white hover:bg-zhu-700;
+  }
+  .btn-ghost {
+    @apply btn bg-transparent hover:bg-black/5 dark:hover:bg-white/10 text-mo-700 dark:text-mo-200;
+  }
+  .btn-outline {
+    @apply btn border border-mo-300 dark:border-mo-700 hover:bg-black/5 dark:hover:bg-white/10 text-mo-800 dark:text-mo-100;
+  }
+  .input {
+    @apply w-full rounded-md border border-mo-300 dark:border-mo-700 bg-white dark:bg-mo-800 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zhu-400/60 focus:border-zhu-500 placeholder:text-mo-400;
+  }
+  .label {
+    @apply text-xs font-medium text-mo-600 dark:text-mo-300 mb-1 block;
+  }
+  .card {
+    @apply rounded-xl border border-mo-200/70 dark:border-mo-700/60 bg-white/90 dark:bg-mo-900/70 backdrop-blur shadow-sm;
+  }
+  .pillar-cell {
+    @apply flex flex-col items-center justify-center rounded-lg border border-mo-200 dark:border-mo-700 py-2;
+  }
+}
+
+/* Markdown 排版 */
+.markdown {
+  @apply text-[15px] leading-relaxed;
+}
+.markdown h1,
+.markdown h2,
+.markdown h3 {
+  @apply font-serif text-zhu-700 dark:text-zhu-300 mt-3 mb-1;
+}
+.markdown h1 { @apply text-lg; }
+.markdown h2 { @apply text-base; }
+.markdown h3 { @apply text-[15px]; }
+.markdown p { @apply my-2; }
+.markdown ul { @apply my-2 list-disc pl-5; }
+.markdown ol { @apply my-2 list-decimal pl-5; }
+.markdown code {
+  @apply rounded bg-black/5 dark:bg-white/10 px-1 py-0.5 text-[13px];
+}
+.markdown pre {
+  @apply rounded-md bg-black/5 dark:bg-white/10 p-3 overflow-x-auto my-2;
+}
+.markdown blockquote {
+  @apply border-l-4 border-zhu-300 pl-3 text-mo-600 dark:text-mo-300 my-2;
+}
+.markdown table {
+  @apply my-2 border-collapse text-sm;
+}
+.markdown th,
+.markdown td {
+  @apply border border-mo-300 dark:border-mo-600 px-2 py-1;
+}
