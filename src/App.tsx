@@ -126,7 +126,7 @@ function Header({
           </span>
           <div>
             <div className="font-serif text-base font-semibold leading-none">
-              子平 · AI 八字
+              羡阳 · AI 八字
             </div>
             <div className="text-[10px] text-mo-500 dark:text-mo-400 mt-0.5">
               自动排盘 · 多模型对话 · 自带 API Key
