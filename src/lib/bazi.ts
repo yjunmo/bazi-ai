@@ -111,6 +111,19 @@ function trueSolarTimeOffsetMinutes(longitudeDeg: number): number {
   return (longitudeDeg - 120) * 4;
 }
 
+/**
+ * 防御性调用：lunar-typescript 在某些边界条件下（例如对空字符串干支调用 getXunKong）
+ * 会因为内部 LunarUtil.find() 返回 null 而抛 "Cannot read properties of null"。
+ * 此处包一层 try/catch，单个字段失败时降级到 fallback，避免整盘起不来。
+ */
+function safeCall<T>(fn: () => T, fallback: T): T {
+  try {
+    return fn();
+  } catch {
+    return fallback;
+  }
+}
+
 function addMinutes(
   y: number, m: number, d: number, h: number, mi: number, deltaMin: number
 ): { y: number; m: number; d: number; h: number; mi: number } {
@@ -243,16 +256,23 @@ export function computeBazi(input: BirthInput): BaziChart {
 
   const genderCode = input.gender === 'male' ? 1 : 0;
   const yun = ec.getYun(genderCode, 2);
-  const daYunList = yun.getDaYun(10);
-  const daYun: DaYunItem[] = daYunList.map((item) => ({
-    index: item.getIndex(),
-    startYear: item.getStartYear(),
-    endYear: item.getEndYear(),
-    startAge: item.getStartAge(),
-    endAge: item.getEndAge(),
-    ganZhi: item.getGanZhi(),
-    xunKong: item.getXunKong(),
-  }));
+  // 多取一条 (11) ：lunar-typescript 的 getDaYun 第 0 项是「未起运/童年」段，
+  // 干支为空，调用 getXunKong() 时库内部 find() 返回 null 会抛
+  // "Cannot read properties of null (reading 'index')"，因此我们过滤掉 index < 1
+  // 后仍保留完整的 10 步实际大运。
+  const daYunList = yun.getDaYun(11);
+  const daYun: DaYunItem[] = daYunList
+    .filter((item) => item.getIndex() >= 1)
+    .map((item) => ({
+      index: item.getIndex(),
+      startYear: item.getStartYear(),
+      endYear: item.getEndYear(),
+      startAge: item.getStartAge(),
+      endAge: item.getEndAge(),
+      ganZhi: item.getGanZhi(),
+      // 防御：万一库里其它边界情况也踩到 find()→null，整盘不至于全废
+      xunKong: safeCall(() => item.getXunKong(), ''),
+    }));
 
   const pillarStrs = [
     yearP.ganZhi,
@@ -272,10 +292,10 @@ export function computeBazi(input: BirthInput): BaziChart {
       wuXing: WU_XING_OF_GAN[dayP.gan] ?? '',
     },
     wuXingCount: countWuXing(pillarStrs),
-    taiYuan: ec.getTaiYuan(),
-    taiYuanNaYin: ec.getTaiYuanNaYin(),
-    mingGong: ec.getMingGong(),
-    shenGong: ec.getShenGong(),
+    taiYuan: safeCall(() => ec.getTaiYuan(), ''),
+    taiYuanNaYin: safeCall(() => ec.getTaiYuanNaYin(), ''),
+    mingGong: safeCall(() => ec.getMingGong(), ''),
+    shenGong: safeCall(() => ec.getShenGong(), ''),
     yun: {
       forward: yun.isForward(),
       startAgeYears: yun.getStartYear(),
