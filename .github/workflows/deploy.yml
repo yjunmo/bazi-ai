@@ -14,6 +14,12 @@ concurrency:
   group: pages
   cancel-in-progress: true
 
+# 显式让所有 JavaScript Action 跑在 Node.js 24 上。
+# - 2026-06-02 起 GitHub 会强制切到 Node 24，提前打开避免被动切换出问题；
+# - Node 24 成为默认后，这个变量就是 no-op，可继续保留。
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -41,7 +47,7 @@ jobs:
         run: cp dist/index.html dist/404.html
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: dist
 
