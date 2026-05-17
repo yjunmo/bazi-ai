@@ -73,8 +73,8 @@ export const deepseekInfo: ProviderInfo = {
   name: 'DeepSeek',
   defaultBaseURL: 'https://api.deepseek.com',
   devProxyPath: '/api/deepseek',
-  defaultModel: 'deepseek-chat',
-  knownModels: ['deepseek-chat', 'deepseek-reasoner'],
+  defaultModel: 'deepseek-v4-pro',
+  knownModels: ['deepseek-v4-pro', 'deepseek-v4-flash'],
   apiKeyLink: 'https://platform.deepseek.com/api_keys',
   note: '性价比高，中文能力强，推荐首选。',
 };
