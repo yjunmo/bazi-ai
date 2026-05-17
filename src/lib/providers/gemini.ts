@@ -7,15 +7,17 @@ export const geminiInfo: ProviderInfo = {
   name: 'Google Gemini',
   defaultBaseURL: 'https://generativelanguage.googleapis.com',
   devProxyPath: '/api/gemini',
-  defaultModel: 'gemini-2.5-flash',
+  defaultModel: 'gemini-3.1-flash-lite',
   knownModels: [
-    'gemini-2.5-flash',
-    'gemini-2.5-pro',
-    'gemini-2.0-flash',
-    'gemini-1.5-pro',
-    'gemini-1.5-flash',
+    'gemini-3.1-flash-lite',
+    'gemini-3.1-flash-lite-preview',
+    'gemini-3-flash-preview',
+    'gemini-3.1-pro-preview',
+    'gemini-3.1-flash-image-preview',
+    'gemini-3-pro-image-preview',
   ],
   apiKeyLink: 'https://aistudio.google.com/apikey',
+  note: '默认 gemini-3.1-flash-lite（性价比高）。复杂解读可改 gemini-3.1-pro-preview。',
 };
 
 export const geminiProvider: Provider = {

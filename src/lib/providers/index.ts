@@ -21,10 +21,10 @@ const PROVIDERS: Record<ProviderId, Provider> = {
 };
 
 export const PROVIDER_INFOS: ProviderInfo[] = [
-  openaiInfo,
-  anthropicInfo,
   geminiInfo,
   deepseekInfo,
+  openaiInfo,
+  anthropicInfo,
   zhipuInfo,
   moonshotInfo,
   qwenInfo,
